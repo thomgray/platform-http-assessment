@@ -1,21 +1,17 @@
 package uk.co.bbc.platformhttpassessment;
 
 
-import org.apache.http.client.HttpClient;
-import org.apache.http.impl.client.HttpClients;
-import uk.co.bbc.platformhttpassessment.domain.HttpGetResult;
+import dagger.Component;
+import uk.co.bbc.platformhttpassessment.modules.MainModule;
 
-import java.util.ArrayList;
-import java.util.List;
+@Component(modules = {MainModule.class})
+interface MainComponent {
+    Application getApplication();
+}
 
 public class Main {
     public static void main(String[] args) {
-        for (String arg :
-                args) {
-            System.out.println(arg);
-        }
-        HttpClient client = HttpClients.createDefault();
-        List<HttpGetResult> results = new ArrayList<>();
-
+        MainComponent mainComponent = DaggerMainComponent.create();
+        mainComponent.getApplication().run(args);
     }
 }

@@ -1,2 +1,6 @@
+uk/co/bbc/platformhttpassessment/Application.class
 uk/co/bbc/platformhttpassessment/Main.class
+uk/co/bbc/platformhttpassessment/DaggerApplication.class
 uk/co/bbc/platformhttpassessment/domain/HttpGetResult.class
+uk/co/bbc/platformhttpassessment/DaggerApplication$1.class
+uk/co/bbc/platformhttpassessment/DaggerApplication$Builder.class
