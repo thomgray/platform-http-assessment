@@ -5,12 +5,14 @@ public class HttpGetResult {
     private final Integer status;
     private final Long contentLength;
     private final String dateTime;
+    private final String error;
 
-    public HttpGetResult(String url, Integer status, Long contentLength, String dateTime) {
+    public HttpGetResult(String url, Integer status, Long contentLength, String dateTime, String error) {
         this.url = url;
         this.status = status;
         this.contentLength = contentLength;
         this.dateTime = dateTime;
+        this.error = error;
     }
 
     public String getUrl() {
@@ -30,7 +32,7 @@ public class HttpGetResult {
     }
 
     public String getError() {
-        return null;
+        return error;
     }
 
     public static class Builder {
@@ -38,6 +40,7 @@ public class HttpGetResult {
         Integer statusCode;
         Long contentLength;
         String date;
+        String error;
 
         public Builder url(String url) {
             this.url = url;
@@ -59,8 +62,13 @@ public class HttpGetResult {
             return this;
         }
 
+        public Builder error(String error) {
+            this.error = error;
+            return this;
+        }
+
         public HttpGetResult build() {
-            return new HttpGetResult(url, statusCode, contentLength, date);
+            return new HttpGetResult(url, statusCode, contentLength, date, error);
         }
     }
 }
