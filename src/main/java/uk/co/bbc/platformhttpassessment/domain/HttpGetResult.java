@@ -1,15 +1,12 @@
 package uk.co.bbc.platformhttpassessment.domain;
 
-import java.util.Date;
-
 public class HttpGetResult {
     private String url;
     private int status;
     private long contentLength;
-    private Date dateTime;
+    private String dateTime;
 
-
-    public HttpGetResult(String url, int status, long contentLength, Date dateTime) {
+    public HttpGetResult(String url, int status, long contentLength, String dateTime) {
         this.url = url;
         this.status = status;
         this.contentLength = contentLength;
@@ -28,7 +25,7 @@ public class HttpGetResult {
         return contentLength;
     }
 
-    public Date getDateTime() {
+    public String getDateTime() {
         return dateTime;
     }
 }

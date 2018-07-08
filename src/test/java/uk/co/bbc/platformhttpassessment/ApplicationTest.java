@@ -24,7 +24,7 @@ class ApplicationTest {
     }
 
     @Test
-    void shouldMakeRequestForEachUrlInArgs() {
+    void shouldMakeRequestForEachUrlInArgs() throws Exception {
         String[] args = {URL_1, URL_2};
 
         underTest.run(args);
