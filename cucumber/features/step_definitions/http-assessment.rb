@@ -12,7 +12,7 @@ When(/^I run the command with the following urls$/) do |table|
 end
 
 Then(/^I should get a result containing (\d+) items?$/) do |length|
-  expect(@json_output.size).to_eq length
+  expect(@json_output.size).to eq(length.to_i)
 end
 
 Then(/^the result should include$/) do |table|

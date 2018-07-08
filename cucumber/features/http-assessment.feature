@@ -2,10 +2,10 @@ Feature: Make a number of HTTP requests
 
   Scenario: a list of valid urls
     Given the url "http://www.bbc.co.uk/iplayer" is returning 200 statuses with headers:
-      | Content-length | 1234                          |
+      | Content-Length | 1234                          |
       | Date           | Thu, 05 Jul 2018 21:58:20 GMT |
     And the url "https://google.com" is returning 304 statuses with headers:
-      | Content-length | 262                           |
+      | Content-Length | 262                           |
       | Date           | Thu, 05 Jul 2018 21:58:20 GMT |
     When I run the command with the following urls
       | http://www.bbc.co.uk/iplayer |

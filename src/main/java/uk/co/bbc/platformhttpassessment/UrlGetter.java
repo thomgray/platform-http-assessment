@@ -10,36 +10,49 @@ import javax.inject.Inject;
 import java.io.IOException;
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 public class UrlGetter {
-    public static final String DATE_HEADER_NAME = "Date";
-    public static final String CONTENT_LENGTH_HEADER_NAME = "Content-Length";
+    static final String DATE_HEADER_NAME = "Date";
+    static final String CONTENT_LENGTH_HEADER_NAME = "Content-Length";
 
     private final HttpClient client;
     private final UrlValidator validator;
 
     @Inject
-    public UrlGetter(HttpClient client, UrlValidator validator) {
+    UrlGetter(HttpClient client, UrlValidator validator) {
         this.client = client;
         this.validator = validator;
     }
 
-    public HttpGetResult get(String url) throws IOException {
+    public HttpGetResult get(String url)  {
         HttpGetResult.Builder resultBuilder = new HttpGetResult.Builder()
                 .url(url);
 
-        Optional<URI> validUri = validator.getValidUri(url);
+        validator.getValidUri(url).ifPresentOrElse(
+                (uri) -> performGetRequest(resultBuilder, uri),
+                () -> resultBuilder.error("invalid url")
+        );
 
-        if (!validUri.isPresent()) {
-            return resultBuilder.error("invalid url").build();
+        return resultBuilder.build();
+    }
+
+    private void performGetRequest(HttpGetResult.Builder resultBuilder, URI uri) {
+        HttpGet get = new HttpGet(uri);
+        HttpResponse response;
+
+        try {
+            response = client.execute(get);
+            resultBuilder.statusCode(response.getStatusLine().getStatusCode());
+            setHeaderValues(resultBuilder, response);
+        } catch (IOException e) {
+            resultBuilder.error("connection error");
+        } finally {
+            get.releaseConnection();
         }
+    }
 
-        HttpGet get = new HttpGet(validUri.get());
-        HttpResponse response = client.execute(get);
 
-        resultBuilder.statusCode(response.getStatusLine().getStatusCode());
-
+    private void setHeaderValues(HttpGetResult.Builder resultBuilder, HttpResponse response) {
         List<Header> headers = List.of(response.getAllHeaders());
         String contentLength = getHeader(CONTENT_LENGTH_HEADER_NAME, headers);
         String date = getHeader(DATE_HEADER_NAME, headers);
@@ -49,8 +62,6 @@ public class UrlGetter {
         } catch (NumberFormatException e) {
             // ignore exception, leave field as null
         }
-
-        return resultBuilder.build();
     }
 
     private String getHeader(String header, List<Header> headers) {

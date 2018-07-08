@@ -1,0 +1,2 @@
+java -jar ./target/platform-http-assessment-1.0.0-shaded.jar $@
+
