@@ -1,10 +1,13 @@
 package uk.co.bbc.platformhttpassessment;
 
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import uk.co.bbc.platformhttpassessment.domain.HttpGetResult;
 
 import javax.inject.Inject;
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.ExecutionException;
@@ -19,14 +22,11 @@ public class Application {
 
     private final UrlGetter urlGetter;
     private final Executor executor;
-    private final ObjectMapper objectMapper;
 
     @Inject
     public Application(UrlGetter urlGetter) {
         this.urlGetter = urlGetter;
         executor = Executors.newFixedThreadPool(5);
-        objectMapper = new ObjectMapper();
-        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
     }
 
     public void run(String[] args) {
@@ -36,6 +36,18 @@ public class Application {
                 .map((url) -> resultCompletionService.submit(() -> urlGetter.get(url)))
                 .map(this::getResultFromFuture).collect(Collectors.toList());
 
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+        objectMapper.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
+
+        try {
+//            System.out.println(objectMapper.writeValueAsString(results));
+            objectMapper.writeValue(System.out, results);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private HttpGetResult getResultFromFuture(Future<HttpGetResult> future) {
