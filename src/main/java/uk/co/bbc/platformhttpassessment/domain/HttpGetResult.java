@@ -1,10 +1,17 @@
 package uk.co.bbc.platformhttpassessment.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class HttpGetResult {
+    @JsonProperty("Url")
     private final String url;
+    @JsonProperty("Status_code")
     private final Integer status;
+    @JsonProperty("Content_length")
     private final Long contentLength;
+    @JsonProperty("Date")
     private final String dateTime;
+    @JsonProperty("Error")
     private final String error;
 
     public HttpGetResult(String url, Integer status, Long contentLength, String dateTime, String error) {

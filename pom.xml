@@ -13,7 +13,7 @@
 
         <!--Dependencies-->
         <apache.version>4.5.5</apache.version>
-        <jackson-databind.version>2.9.5</jackson-databind.version>
+        <jackson.version>2.9.5</jackson.version>
 
         <!--DI-->
         <dagger.version>2.16</dagger.version>
@@ -23,7 +23,6 @@
         <junit-jupiter.version>5.2.0</junit-jupiter.version>
         <junit-platform-runner.version>1.2.0</junit-platform-runner.version>
         <mockito-junit-jupiter.version>2.18.3</mockito-junit-jupiter.version>
-        <system-rules.version>1.18.0</system-rules.version>
     </properties>
 
     <dependencies>
@@ -35,7 +34,12 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>${jackson-databind.version}</version>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${jackson.version}</version>
         </dependency>
 
         <!--DI-->
@@ -80,12 +84,6 @@
             <groupId>org.mockito</groupId>
             <artifactId>mockito-junit-jupiter</artifactId>
             <version>${mockito-junit-jupiter.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.github.stefanbirkner</groupId>
-            <artifactId>system-rules</artifactId>
-            <version>${system-rules.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

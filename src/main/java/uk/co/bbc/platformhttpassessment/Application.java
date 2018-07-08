@@ -1,5 +1,6 @@
 package uk.co.bbc.platformhttpassessment;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -38,10 +39,10 @@ public class Application {
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         objectMapper.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
 
         try {
-//            System.out.println(objectMapper.writeValueAsString(results));
             objectMapper.writeValue(System.out, results);
         } catch (JsonProcessingException e) {
             e.printStackTrace();

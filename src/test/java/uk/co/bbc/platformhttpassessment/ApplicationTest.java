@@ -1,8 +1,5 @@
 package uk.co.bbc.platformhttpassessment;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import org.junit.contrib.java.lang.system.SystemOutRule;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,7 +10,9 @@ import uk.co.bbc.platformhttpassessment.domain.HttpGetResult;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.util.List;
+import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -65,12 +64,24 @@ class ApplicationTest {
 
         underTest.run(new String[]{URL_1, URL_2});
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+        URI fixtureFile = getClass().getClassLoader().getResource("valid-output.json").toURI();
+        String fixtureString = new String(Files.readAllBytes(Paths.get(fixtureFile)));
 
-        String expectedOutput = objectMapper.writeValueAsString(List.of(result1, result2));
+        assertEquals(fixtureString, sysOutStream.toString());
+    }
 
-        assertEquals(expectedOutput, sysOutStream.toString());
+    @Test
+    void shouldLogResultsWhenError() throws Exception {
+        HttpGetResult result = new HttpGetResult(URL_1, null, null, null, "this is an error");
+
+        when(urlGetter.get(anyString())).thenReturn(result);
+
+        underTest.run(new String[]{URL_1});
+
+        URI invalidUrlFixture = getClass().getClassLoader().getResource("invalid-output.json").toURI();
+        String fixtureString = new String(Files.readAllBytes(Paths.get(invalidUrlFixture)));
+
+        assertEquals(fixtureString, sysOutStream.toString());
     }
 
 
