@@ -9,7 +9,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class UrlValidatorTest {
-    final UrlValidator underTest = new UrlValidator();
+    private UrlValidator underTest = new UrlValidator();
 
     @ParameterizedTest
     @ValueSource(strings = {
@@ -32,5 +32,4 @@ class UrlValidatorTest {
 
         assertEquals(Optional.empty(), result);
     }
-
 }
