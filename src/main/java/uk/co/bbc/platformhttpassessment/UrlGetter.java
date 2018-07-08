@@ -27,6 +27,10 @@ public class UrlGetter {
 
         List<Header> headers = List.of(response.getAllHeaders());
 
+        HttpGetResult.Builder resultBuilder = new HttpGetResult.Builder()
+                .statusCode(response.getStatusLine().getStatusCode())
+                .url(url);
+
         String contentLength = headers.stream()
                 .filter((h) -> h.getName().equals(CONTENT_LENGTH_HEADER_NAME))
                 .findFirst()
@@ -37,6 +41,12 @@ public class UrlGetter {
                 .findFirst()
                 .map(Header::getValue).orElse(null);
 
-        return new HttpGetResult(url, response.getStatusLine().getStatusCode(), Long.valueOf(contentLength), date);
+        resultBuilder.date(date);
+        try {
+            resultBuilder.contentLength(Long.valueOf(contentLength));
+        } catch (NumberFormatException e) {
+        }
+
+        return resultBuilder.build();
     }
 }
