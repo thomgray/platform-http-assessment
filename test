@@ -1,0 +1,7 @@
+#! /usr/bin/env bash
+
+mvn test
+
+# bundle exec cucumber
+
+
