@@ -25,7 +25,8 @@ class UrlValidatorTest {
     @ParameterizedTest
     @ValueSource(strings = {
             "bad://www.foo.com",
-            "https://www.foo with spaces"
+            "https://www.foo with spaces",
+            "www.noschema.com"
     })
     void returnsEmptyOptionIfUrlIsInvalid(String url) {
         Optional<URI> result = underTest.getValidUri(url);

@@ -16,10 +16,12 @@ public class UrlValidator {
     public Optional<URI> getValidUri(String url) {
         try {
             URI uri = new URI(url);
-            if (!schemeIsValid(uri.getScheme())) {
+            String scheme = uri.getScheme();
+            if (scheme != null && schemeIsValid(scheme)) {
+                return Optional.of(uri);
+            } else {
                 return Optional.empty();
             }
-            return Optional.of(uri);
         } catch (URISyntaxException e) {
             return Optional.empty();
         }
