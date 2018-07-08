@@ -3,10 +3,11 @@ package uk.co.bbc.platformhttpassessment;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InOrder;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 @ExtendWith(MockitoExtension.class)
 class ApplicationTest {
@@ -19,19 +20,18 @@ class ApplicationTest {
 
     @BeforeEach
     void setup() {
-        underTest = new Application(urlGetter) {
-        };
+        underTest = new Application(urlGetter);
     }
 
     @Test
     void shouldMakeRequestForEachUrlInArgs() {
         String[] args = {URL_1, URL_2};
 
-        InOrder inOrder = Mockito.inOrder(urlGetter);
+        underTest.run(args);
 
-        inOrder.verify(urlGetter).get(URL_1);
-        inOrder.verify(urlGetter).get(URL_2);
-        inOrder.verifyNoMoreInteractions();
+        verify(urlGetter).get(URL_1);
+        verify(urlGetter).get(URL_2);
+        verifyNoMoreInteractions(urlGetter);
     }
 
 

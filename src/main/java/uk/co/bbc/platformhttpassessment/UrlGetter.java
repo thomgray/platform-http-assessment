@@ -1,5 +1,7 @@
 package uk.co.bbc.platformhttpassessment;
 
+import uk.co.bbc.platformhttpassessment.domain.HttpGetResult;
+
 import javax.inject.Inject;
 
 public class UrlGetter {
@@ -7,7 +9,7 @@ public class UrlGetter {
     public UrlGetter() {
     }
 
-    public void get(String url1) {
-
+    public HttpGetResult get(String url1) {
+        return null;
     }
 }
