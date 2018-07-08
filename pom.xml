@@ -10,7 +10,10 @@
         <java.version>10</java.version>
         <maven-shade-plugin.version>2.4.3</maven-shade-plugin.version>
         <junit-platform-surefire-provider.version>1.2.0</junit-platform-surefire-provider.version>
+
+        <!--Dependencies-->
         <apache.version>4.5.5</apache.version>
+        <jackson-databind.version>2.9.5</jackson-databind.version>
 
         <!--DI-->
         <dagger.version>2.16</dagger.version>
@@ -20,6 +23,7 @@
         <junit-jupiter.version>5.2.0</junit-jupiter.version>
         <junit-platform-runner.version>1.2.0</junit-platform-runner.version>
         <mockito-junit-jupiter.version>2.18.3</mockito-junit-jupiter.version>
+        <system-rules.version>1.18.0</system-rules.version>
     </properties>
 
     <dependencies>
@@ -27,6 +31,11 @@
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
             <version>${apache.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson-databind.version}</version>
         </dependency>
 
         <!--DI-->
@@ -74,9 +83,9 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.tomakehurst</groupId>
-            <artifactId>wiremock</artifactId>
-            <version>2.14.0</version>
+            <groupId>com.github.stefanbirkner</groupId>
+            <artifactId>system-rules</artifactId>
+            <version>${system-rules.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
