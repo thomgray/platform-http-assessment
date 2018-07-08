@@ -21,6 +21,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.co.bbc.platformhttpassessment.UrlGetter.CONTENT_LENGTH_HEADER_NAME;
+import static uk.co.bbc.platformhttpassessment.UrlGetter.DATE_HEADER_NAME;
 
 @ExtendWith(MockitoExtension.class)
 class UrlGetterTest {
@@ -28,8 +30,6 @@ class UrlGetterTest {
     private static final long CONTENT_LENGTH = 100L;
     private static final String DATE = "Sun, 08 Jul 2018 11:15:12 GMT";
     private static final int OK_200 = 200;
-    public static final String DATE_HEADER_NAME = "Date";
-    public static final String CONTENT_LENGTH_HEADER_NAME = "Content-Length";
 
     @Mock
     private HttpClient mockClient;
