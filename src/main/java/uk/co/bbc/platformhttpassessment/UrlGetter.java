@@ -24,7 +24,7 @@ public class UrlGetter {
         this.validator = validator;
     }
 
-    public HttpGetResult get(String url)  {
+    public HttpGetResult get(String url) {
         HttpGetResult.Builder resultBuilder = new HttpGetResult.Builder()
                 .url(url);
 
@@ -45,7 +45,7 @@ public class UrlGetter {
             resultBuilder.statusCode(response.getStatusLine().getStatusCode());
             setHeaderValues(resultBuilder, response);
         } catch (IOException e) {
-            resultBuilder.error("connection error");
+            resultBuilder.error("connection error: " + e.getMessage());
         } finally {
             get.releaseConnection();
         }

@@ -8,6 +8,7 @@ import uk.co.bbc.platformhttpassessment.domain.HttpGetResult;
 
 import javax.inject.Inject;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
@@ -19,6 +20,7 @@ import java.util.stream.Stream;
 
 public class Application {
 
+    private static final int THREADS = 5;
     private final UrlGetter urlGetter;
 
     @Inject
@@ -27,7 +29,9 @@ public class Application {
     }
 
     public void run(String[] args) {
-        ExecutorService executor = Executors.newFixedThreadPool(5);
+        setProxies();
+
+        ExecutorService executor = Executors.newFixedThreadPool(THREADS);
         ExecutorCompletionService<HttpGetResult> resultCompletionService = new ExecutorCompletionService<>(executor);
 
         List<HttpGetResult> results = Stream.of(args)
@@ -40,11 +44,30 @@ public class Application {
             objectMapper.writerWithDefaultPrettyPrinter().writeValue(System.out, results);
             System.out.print("\n");
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            System.err.println("Error formatting results: " + e.getMessage());
         } catch (IOException e) {
-            //todo log to stderr
-            e.printStackTrace();
+            System.err.println("Encountered error while writing to std out: " + e.getMessage());
         }
+    }
+
+    private void setProxies() {
+        // this isn't working. Application won't work on reith :(
+        Stream.of("http", "https").forEach((protocol) -> {
+            String envKey = protocol.toUpperCase() + "_PROXY";
+            String proxyHostKey = protocol + ".proxyHost";
+            String proxyPortKey = protocol + ".proxyPort";
+            String proxtValue = System.getenv(envKey);
+
+            if (proxtValue != null) {
+                String[] parts = proxtValue.split(":");
+                String portValue = parts.length > 1 ? parts[1] : null;
+
+                System.setProperty(proxyHostKey, parts[0]);
+                if (portValue != null) {
+                    System.setProperty(proxyPortKey, portValue);
+                }
+            }
+        });
     }
 
     private HttpGetResult getResultFromFuture(Future<HttpGetResult> future) {
